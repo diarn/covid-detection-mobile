@@ -3,11 +3,14 @@ version: 1.0.0+1
 publish_to: none
 description: A new Flutter project.
 environment: 
-  sdk: '>=2.17.6 <3.0.0'
+  sdk: '>=2.12.0 <3.0.0'
 
 dependencies: 
   cupertino_icons: ^1.0.2
   get: 4.6.5
+  http: 0.13.5
+  google_fonts: 3.0.1
+  fluentui_icons: 1.0.0
   flutter: 
     sdk: flutter
 
@@ -17,5 +20,7 @@ dev_dependencies:
     sdk: flutter
 
 flutter: 
+  assets: 
+    - assets/
   uses-material-design: true
 
