@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
@@ -6,7 +7,9 @@ import 'package:mobile_app/app/services/api/classification_services.dart';
 import 'package:mobile_app/app/widgets/my_widget.dart';
 
 class SurveyController extends GetxController {
-  RxList<String> symptoms = [
+  final RxString type = "variant".obs;
+
+  RxList<String> mainSymptoms = [
     "Batuk",
     "Nyeri Otot",
     "Lelah",
@@ -29,7 +32,25 @@ class SurveyController extends GetxController {
     "Mata Pink",
   ].obs;
 
-  RxList<String> symptomsInfo = [
+  RxList<String> variantSymptoms = [
+    "Kelelahan",
+    "Sakit Kepala",
+    "Kehilangan Nafsu Makan",
+    "Gampang Marah atau Bingung",
+    "Kesakitan Umum",
+    "Mialgia atau Sakit Badan",
+    "Diare",
+    "Mual-mual atau Muntah",
+    "Sesak Nafas",
+    "Sakit Tenggorokan",
+    "Menggigil",
+    "Batuk",
+    "Punya Riwayat Demam",
+    "Demam",
+    "Penyakit Lain",
+  ].obs;
+
+  RxList<String> mainSymptomsInfo = [
     "Berdasarkan penyebabnya\n\nHal pertama yang membedakan batuk biasa dan batuk gejala COVID-19 adalah penyebabnya. Umumnya, batuk biasa bisa disebabkan oleh flu, misalnya karena virus influenza atau rhinovirus, sedangkan batuk gejala COVID-19 disebabkan oleh virus Corona.\nSementara itu, lamanya waktu hingga muncul gejala batuk pun berbeda. Batuk flu biasanya baru muncul selama 1–3 hari setelah terpapar virus, sedangkan batuk gejala COVID-19 sekitar 2–14 hari.\nWalau berbeda, cara penularan kedua batuk ini tetap sama, yaitu melalui udara, percikan liur dan ingus (droplet), dan kontak fisik dengan orang yang sakit.\nBerdasarkan komplikasi yang dapat ditimbulkan\n\nBatuk biasa akibat flu dapat sembuh dalam waktu beberapa hari hingga beberapa minggu. Namun, bila batuk yang Anda derita telah berlangsung lebih dari 3 minggu, batuk tersebut sudah dikategorikan sebagai batuk kronis. Batuk yang lama sembuh ini lebih sering terjadi pada penderita asma, COPD, atau sinusitis.\nJika tidak diobati dengan baik, flu yang menyebabkan batuk biasa terkadang bisa menimbulkan sejumlah komplikasi, seperti pneumonia.\nDi sisi lain, COVID-19 yang menimbulkan gejala batuk juga berpotensi menimbulkan komplikasi berupa pneumonia dan ARDS. Namun, risiko terjadinya komplikasi tersebut lebih tinggi pada penderita yang belum mendapatkan vaksin COVID-19, memiliki penyakit komorbid, atau berusia lanjut.\nPada kasus tertentu, COVID-19 juga bisa menyebabkan gejala atau masalah kesehatan yang berlangsung lama, bahkan setelah infeksinya sembuh, seperti anosmia, parosmia, dan long-haul COVID-19.",
     "Nyeri otot akibat COVID-19 sulit dibedakan dengan nyeri otot akibat cedera olahraga. Nyeri akibat virus cenderung menyebar ke seluruh jaringan otot, sedangkan nyeri akibat cedera olahraga cenderung menyerang otot tertentu saja.\nNyeri otot akibat gejala COVID-19 cenderung sembuh dalam beberapa minggu hingga bulan setelah infeksi penyakit sembuh, sedangkan nyeri otot akibat cedera olahraga akan sembuh dalam waktu 48-72 jam.",
     "Perbedaan nyata gejala lelah biasa dan akibat COVID-19 terletak pada kadar saturasi oksigen di dalam tubuh.\nSelain itu, lelah yang bukan akibat COVID-19 juga biasanya tidak disertai dengan gejala-gejala lain, seperti kehilangan indra penciuman, batuk kering, sakit tenggorokan, demam, dan lain sebagainya.",
@@ -52,16 +73,51 @@ class SurveyController extends GetxController {
     "Tidak semua mata merah pasti adalah gejala COVID-19. Konjungtivitis bisa disebabkan oleh berbagai macam bakteri dan virus. Selain itu, mata merah juga bisa dipicu oleh alergi musiman yang menyebabkan mata gatal, berair dan bengkak. Iritasi, seperti polusi udara, klorin di kolam renang dan paparan bahan kimia beracun juga bisa menyebabkan mata merah. Lantas, apa bedanya mata merah dengan gejala COVID-19.\n\nMenurut AOA dan Centers for Disease Control and Prevention (CDC), berikut adalah beberapa gejala umum dari mata merah muda atau konjungtivitis:\n\n•Warna merah di bagian putih mata.\n•Pembengkakan konjungtiva dan atau kelopak mata.\n•Peningkatan kepekaan terhadap cahaya.\n•Perasaan berpasir di satu atau kedua mata.\n•Peningkatan produksi air mata.\n•Merasa seperti ada benda asing di mata atau keinginan untuk menggosok mata.\n•Gatal, iritasi, dan/atau terbakar.\n•Keluar cairan dari mata.\n•Lensa kontak terasa tidak nyaman dan/atau tidak menempel pada mata.\n\nMata merah diduga merupakan gejala COVID-19 bila disertai dengan gejala berikut:\n\n•Demam.\n•Batuk.\n•Sesak napas atau kesulitan bernapas.\n•Warna kebiruan pada bibir atau wajah.\n•Nyeri dada.\n•Kelelahan ekstrem.\n•Kehilangan penciuman dan atau perasa.",
   ].obs;
 
-  RxList<int> mySymptoms = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0].obs;
+  RxList<String> variantSymptomsInfo = [
+    "Kelelahan",
+    "Sakit Kepala",
+    "Kehilangan Nafsu Makan",
+    "Gampang Marah atau Bingung",
+    "Kesakitan Umum",
+    "Mialgia atau Sakit Badan",
+    "Diare",
+    "Mual-mual atau Muntah",
+    "Sesak Nafas",
+    "Sakit Tenggorokan",
+    "Menggigil",
+    "Batuk",
+    "Punya Riwayat Demam",
+    "Demam",
+    "Penyakit Lain",
+  ].obs;
+
+  RxList<int> myMainSymptoms = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0].obs;
+  RxList<int> myVariantSymptoms = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0].obs;
 
   RxInt currentIndex = 0.obs;
-  RxInt totalIndex = 20.obs;
+  RxInt mainSymptomsTotalIndex = 20.obs;
+  RxInt variantSymptomsTotalIndex = 15.obs;
+  RxInt totalIndex = 0.obs;
 
-  final PageController pageController = PageController();
+  final PageController mainPageController = PageController();
+  final PageController variantPageController = PageController();
   @override
   void onInit() {
-    pageController.addListener(() {
-      currentIndex.value = pageController.page!.floor();
+    type.value = Get.arguments;
+    type.refresh();
+    if (type.value == "main covid") {
+      totalIndex.value = 19;
+      totalIndex.refresh();
+    } else {
+      totalIndex.value = 14;
+      totalIndex.refresh();
+    }
+    mainPageController.addListener(() {
+      currentIndex.value = mainPageController.page!.floor();
+      currentIndex.refresh();
+    });
+    variantPageController.addListener(() {
+      currentIndex.value = variantPageController.page!.floor();
       currentIndex.refresh();
     });
     super.onInit();
@@ -74,13 +130,14 @@ class SurveyController extends GetxController {
 
   @override
   void onClose() {
-    pageController.dispose();
+    mainPageController.dispose();
+    variantPageController.dispose();
   }
 
   double getProgressWidth() {
     double maxWidth = Get.width - 32.0;
     var tempIndex = currentIndex.value + 1;
-    var perItem = 0.05;
+    var perItem = type.value == "main covid" ? 0.05 : 0.067;
     var index = tempIndex * perItem;
     return maxWidth * index;
   }
@@ -88,140 +145,376 @@ class SurveyController extends GetxController {
   showDialog() {
     Get.dialog(
       Dialog(child: dialogContent()),
+      barrierDismissible: false,
     );
   }
 
+  checkPositiveSymptoms() {
+    List<int> positiveSymptoms = type.value == "main covid"
+        ? myMainSymptoms.where((p0) => p0 == 1).toList()
+        : myVariantSymptoms.where((p0) => p0 == 1).toList();
+    if (positiveSymptoms.length < 6) {
+      Get.dialog(
+        Dialog(
+          child: Container(
+            padding: EdgeInsets.symmetric(horizontal: 24, vertical: 24),
+            height: Get.height * 0.3,
+            width: Get.width - 32,
+            child: Column(
+              children: [
+                Text(
+                  "Oops, Terjadi Kesalahan",
+                  style: TextStyle(
+                    fontSize: 20,
+                  ),
+                ),
+                Expanded(
+                  child: Center(
+                    child: Text.rich(
+                      TextSpan(
+                        text: "Anda harus mengkonfirmasi minimal ",
+                        children: [
+                          TextSpan(
+                            text: "6 gejala ",
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          TextSpan(text: "positif untuk bisa melanjutkan proses"),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+                MyButtonWidget(
+                  label: "Kembali",
+                  func: () {
+                    Get.back();
+                  },
+                )
+              ],
+            ),
+          ),
+        ),
+        barrierDismissible: false,
+      );
+    } else {
+      showDialog();
+    }
+  }
+
   Widget dialogContent() {
-    var content = {
-      "Batuk": mySymptoms[0],
-      "Nyeri Otot": mySymptoms[1],
-      "Lelah": mySymptoms[2],
-      "Sakit Tenggorokan": mySymptoms[3],
-      "Pilek": mySymptoms[4],
-      "Hidung Tersumbat": mySymptoms[5],
-      "Demam": mySymptoms[6],
-      "Mual-mual": mySymptoms[7],
-      "Muntah-muntah": mySymptoms[8],
-      "Diare": mySymptoms[9],
-      "Nafas Pendek": mySymptoms[10],
-      "Susah Bernafas": mySymptoms[11],
-      "Hilang Rasa": mySymptoms[12],
-      "Hilang Penciuman": mySymptoms[13],
-      "Hidung Gatal": mySymptoms[14],
-      "Mata Gatal": mySymptoms[15],
-      "Mulut Gatal": mySymptoms[16],
-      "Telinga Dalam Gatal": mySymptoms[17],
-      "Bersin-bersin": mySymptoms[18],
-      "Mata Pink": mySymptoms[19],
+    var mainContent = {
+      "Batuk": myMainSymptoms[0],
+      "Nyeri Otot": myMainSymptoms[1],
+      "Lelah": myMainSymptoms[2],
+      "Sakit Tenggorokan": myMainSymptoms[3],
+      "Pilek": myMainSymptoms[4],
+      "Hidung Tersumbat": myMainSymptoms[5],
+      "Demam": myMainSymptoms[6],
+      "Mual-mual": myMainSymptoms[7],
+      "Muntah-muntah": myMainSymptoms[8],
+      "Diare": myMainSymptoms[9],
+      "Nafas Pendek": myMainSymptoms[10],
+      "Susah Bernafas": myMainSymptoms[11],
+      "Hilang Rasa": myMainSymptoms[12],
+      "Hilang Penciuman": myMainSymptoms[13],
+      "Hidung Gatal": myMainSymptoms[14],
+      "Mata Gatal": myMainSymptoms[15],
+      "Mulut Gatal": myMainSymptoms[16],
+      "Telinga Dalam Gatal": myMainSymptoms[17],
+      "Bersin-bersin": myMainSymptoms[18],
+      "Mata Pink": myMainSymptoms[19],
+    };
+
+    var variantContent = {
+      "Kelelahan": myVariantSymptoms[0],
+      "Sakit Kepala": myVariantSymptoms[1],
+      "Kehilangan Nafsu Makan": myVariantSymptoms[2],
+      "Gampang Marah atau Bingung": myVariantSymptoms[3],
+      "Kesakitan Umum": myVariantSymptoms[4],
+      "Mialgia atau Sakit Badan": myVariantSymptoms[5],
+      "Diare": myVariantSymptoms[6],
+      "Mual-mual atau Muntah": myVariantSymptoms[7],
+      "Sesak Nafas": myVariantSymptoms[8],
+      "Sakit Tenggorokan": myVariantSymptoms[9],
+      "Menggigil": myVariantSymptoms[10],
+      "Batuk": myVariantSymptoms[11],
+      "Punya Riwayat Demam": myVariantSymptoms[12],
+      "Demam": myVariantSymptoms[13],
+      "Penyakit Lain": myVariantSymptoms[14],
     };
 
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 24),
+      padding: EdgeInsets.symmetric(horizontal: 24, vertical: 24),
       height: Get.height * 0.75,
       width: Get.width - 32,
-      child: Expanded(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            SizedBox(
-              height: 16,
-            ),
-            Center(
-              child: Text(
-                "Rekap Gejala",
-                style: TextStyle(
-                  fontSize: 20,
-                ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Center(
+            child: Text(
+              "Rekap Gejala",
+              style: TextStyle(
+                fontSize: 20,
               ),
             ),
-            SizedBox(
-              height: Get.height * 0.02,
-            ),
-            Text(
-              "Sebelum mengkonfirmasi gejala Anda, silahkan untuk memastikan gejala-gejala yang Anda alami",
-            ),
-            SizedBox(
-              height: Get.height * 0.02,
-            ),
-            Expanded(
-              child: SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: content.entries
-                      .map((e) => Row(
-                            children: [
-                              Text(
-                                "${e.key}",
-                                style: TextStyle(
-                                  fontWeight: e.value == 0 ? FontWeight.normal : FontWeight.bold,
+          ),
+          SizedBox(
+            height: Get.height * 0.02,
+          ),
+          Text(
+            "Sebelum mengkonfirmasi gejala Anda, silahkan untuk memastikan gejala-gejala yang Anda alami",
+          ),
+          SizedBox(
+            height: Get.height * 0.02,
+          ),
+          Expanded(
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: type.value == "main covid"
+                    ? mainContent.entries
+                        .map((e) => Row(
+                              children: [
+                                Text(
+                                  "${e.key}",
+                                  style: TextStyle(
+                                    fontWeight: e.value == 0 ? FontWeight.normal : FontWeight.bold,
+                                  ),
                                 ),
-                              ),
-                              Expanded(
-                                child: SizedBox(),
-                              ),
-                              Row(
-                                children: [
-                                  Text(
-                                    e.value == 0 ? "Tidak Mengalami" : "Mengalami",
-                                    style: TextStyle(
-                                      fontWeight: e.value == 0 ? FontWeight.normal : FontWeight.bold,
+                                Expanded(
+                                  child: SizedBox(),
+                                ),
+                                Row(
+                                  children: [
+                                    Text(
+                                      e.value == 0 ? "Tidak Mengalami" : "Mengalami",
+                                      style: TextStyle(
+                                        fontWeight: e.value == 0 ? FontWeight.normal : FontWeight.bold,
+                                      ),
                                     ),
+                                    Icon(
+                                      Icons.circle,
+                                      color: e.value == 0 ? Colors.blueGrey[300] : Colors.blue,
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ))
+                        .toList()
+                    : variantContent.entries
+                        .map((e) => Row(
+                              children: [
+                                Text(
+                                  "${e.key}",
+                                  style: TextStyle(
+                                    fontWeight: e.value == 0 ? FontWeight.normal : FontWeight.bold,
                                   ),
-                                  Icon(
-                                    Icons.circle,
-                                    color: e.value == 0 ? Colors.blueGrey[300] : Colors.blue,
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ))
-                      .toList(),
-                ),
+                                ),
+                                Expanded(
+                                  child: SizedBox(),
+                                ),
+                                Row(
+                                  children: [
+                                    Text(
+                                      e.value == 0 ? "Tidak Mengalami" : "Mengalami",
+                                      style: TextStyle(
+                                        fontWeight: e.value == 0 ? FontWeight.normal : FontWeight.bold,
+                                      ),
+                                    ),
+                                    Icon(
+                                      Icons.circle,
+                                      color: e.value == 0 ? Colors.blueGrey[300] : Colors.blue,
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ))
+                        .toList(),
               ),
             ),
-            SizedBox(
-              height: Get.height * 0.01,
-            ),
-            Row(
-              children: [
-                Expanded(
-                  child: MyButtonWidget(
-                    color: Colors.blueGrey[300],
-                    label: "Kembali",
-                    func: () {
-                      Get.back();
-                    },
-                  ),
+          ),
+          SizedBox(
+            height: Get.height * 0.01,
+          ),
+          Row(
+            children: [
+              Expanded(
+                child: MyButtonWidget(
+                  color: Colors.blueGrey[300],
+                  label: "Kembali",
+                  func: () {
+                    Get.back();
+                  },
                 ),
-                SizedBox(
-                  width: Get.width * 0.01,
+              ),
+              SizedBox(
+                width: Get.width * 0.01,
+              ),
+              Expanded(
+                child: MyButtonWidget(
+                  label: "Konfirmasi",
+                  func: () async {
+                    Get.back();
+                    await calculateResult().then((value) {
+                      if (value != null) {
+                        Get.dialog(
+                          Dialog(
+                            child: resultDialog(value),
+                          ),
+                          barrierDismissible: false,
+                        );
+                      } else {
+                        log("gagal");
+                      }
+                    });
+                  },
                 ),
-                Expanded(
-                  child: MyButtonWidget(
-                    label: "Konfirmasi",
-                    func: () async {
-                      await calculateResult();
-                    },
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(
-              height: 16,
-            ),
-          ],
-        ),
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }
 
+  resultDialog(Map<String, dynamic> data) {
+    RxBool isLoading = true.obs;
+    Future.delayed(7.seconds, () {
+      isLoading.value = false;
+      isLoading.refresh();
+    });
+    return Container(
+        padding: EdgeInsets.symmetric(vertical: 24, horizontal: 24),
+        height: Get.height * 0.5,
+        width: Get.width - 32,
+        child: Obx(() {
+          return isLoading.value != true
+              ? Column(
+                  children: [
+                    Text(
+                      "Hasil Kalkulasi",
+                      style: TextStyle(
+                        fontSize: 20,
+                      ),
+                    ),
+                    SizedBox(
+                      height: Get.height * 0.03,
+                    ),
+                    Expanded(
+                      child: type.value == "main covid"
+                          ? Column(
+                              children: [
+                                ResultDataWidget(
+                                  label: "Alergi",
+                                  resultValue: data["ALLERGY"],
+                                ),
+                                SizedBox(
+                                  height: Get.height * 0.03,
+                                ),
+                                ResultDataWidget(
+                                  label: "Demam",
+                                  resultValue: data["COLD"],
+                                ),
+                                SizedBox(
+                                  height: Get.height * 0.03,
+                                ),
+                                ResultDataWidget(
+                                  label: "Covid",
+                                  resultValue: data["COVID"],
+                                ),
+                                SizedBox(
+                                  height: Get.height * 0.03,
+                                ),
+                                ResultDataWidget(
+                                  label: "Flu",
+                                  resultValue: data["FLU"],
+                                ),
+                              ],
+                            )
+                          : Column(
+                              children: [
+                                ResultDataWidget(
+                                  label: "Alpha",
+                                  resultValue: data["ALPHA"],
+                                ),
+                                SizedBox(
+                                  height: Get.height * 0.03,
+                                ),
+                                ResultDataWidget(
+                                  label: "Beta",
+                                  resultValue: 0,
+                                ),
+                                SizedBox(
+                                  height: Get.height * 0.03,
+                                ),
+                                ResultDataWidget(
+                                  label: "Delta",
+                                  resultValue: data["DELTA"],
+                                ),
+                                SizedBox(
+                                  height: Get.height * 0.03,
+                                ),
+                                ResultDataWidget(
+                                  label: "Omicron",
+                                  resultValue: data["OMICRON"],
+                                ),
+                              ],
+                            ),
+                    ),
+                    MyButtonWidget(
+                      label: "Kembali",
+                      func: () {
+                        Get.back();
+                      },
+                    )
+                  ],
+                )
+              : Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      CircularProgressIndicator(),
+                      SizedBox(
+                        height: Get.height * 0.02,
+                      ),
+                      Text(
+                        "Mohon menunggu, data Anda sedang dikalkulasikan oleh sistem",
+                        textAlign: TextAlign.center,
+                      ),
+                    ],
+                  ),
+                );
+        }));
+  }
+
   Future<dynamic> calculateResult() async {
     String data = "";
-    mySymptoms.forEach((element) {
-      data += element.toString();
-    });
-    await ApiClassificationServices().getMainClassification(data).then((value) {
-      log(value.body);
-    });
+    if (type.value == "main covid") {
+      myMainSymptoms.forEach((element) {
+        data += element.toString();
+      });
+      return await ApiClassificationServices().getMainClassification(data).then((value) {
+        var jsonData = jsonDecode(value.body);
+        if (jsonData["status"] != "fail") {
+          return jsonData["data"];
+        } else {
+          return null;
+        }
+      });
+    } else {
+      myVariantSymptoms.forEach((element) {
+        data += element.toString();
+      });
+      return await ApiClassificationServices().getVariantClassification(data).then((value) {
+        var jsonData = jsonDecode(value.body);
+        if (jsonData["status"] != "fail") {
+          return jsonData["data"];
+        } else {
+          return null;
+        }
+      });
+    }
   }
 }

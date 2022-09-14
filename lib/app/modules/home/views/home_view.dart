@@ -63,9 +63,18 @@ class HomeView extends GetView<HomeController> {
                   child: SizedBox(),
                 ),
                 MyButtonWidget(
-                  label: "Deteksi Penyakit",
+                  label: "Cek Gejala Awal Covid",
                   func: () {
-                    Get.toNamed(Routes.SURVEY);
+                    Get.toNamed(Routes.SURVEY, arguments: "main covid");
+                  },
+                ),
+                SizedBox(
+                  height: Get.height * 0.01,
+                ),
+                MyButtonWidget(
+                  label: "Cek Gejala Awal Varian Covid",
+                  func: () {
+                    Get.toNamed(Routes.SURVEY, arguments: "variant");
                   },
                 ),
                 SizedBox(

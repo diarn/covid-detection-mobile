@@ -50,10 +50,14 @@ class SurveyView extends GetView<SurveyController> {
                 Obx(() {
                   return Text.rich(
                     TextSpan(
-                      text: "${controller.currentIndex.value + 1} / ${controller.totalIndex.value} ~ ",
+                      text: controller.type.value == "main covid"
+                          ? "${controller.currentIndex.value + 1} / ${controller.mainSymptomsTotalIndex.value} ~ "
+                          : "${controller.currentIndex.value + 1} / ${controller.variantSymptomsTotalIndex.value} ~ ",
                       children: [
                         TextSpan(
-                          text: controller.symptoms[controller.currentIndex.value],
+                          text: controller.type.value == "main covid"
+                              ? controller.mainSymptoms[controller.currentIndex.value]
+                              : controller.variantSymptoms[controller.currentIndex.value],
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                           ),
@@ -90,21 +94,31 @@ class SurveyView extends GetView<SurveyController> {
                 SizedBox(
                   height: Get.height * 0.03,
                 ),
-                Expanded(
-                  child: PageView.builder(
-                    controller: controller.pageController,
-                    physics: NeverScrollableScrollPhysics(),
-                    itemCount: controller.symptoms.length,
-                    itemBuilder: (context, x) {
-                      return SymptomsView(
-                        label: controller.symptoms[x],
-                        info: controller.symptomsInfo[x],
-                        currentIndex: x + 1,
-                        totalIndex: controller.symptoms.length,
-                      );
-                    },
-                  ),
-                ),
+                Obx(() {
+                  return Expanded(
+                    child: PageView.builder(
+                      controller:
+                          controller.type.value == "main covid" ? controller.mainPageController : controller.variantPageController,
+                      physics: NeverScrollableScrollPhysics(),
+                      itemCount: controller.type.value == "main covid"
+                          ? controller.mainSymptoms.length
+                          : controller.variantSymptoms.length,
+                      itemBuilder: (context, x) {
+                        return SymptomsView(
+                          label:
+                              controller.type.value == "main covid" ? controller.mainSymptoms[x] : controller.variantSymptoms[x],
+                          info: controller.type.value == "main covid"
+                              ? controller.mainSymptomsInfo[x]
+                              : controller.variantSymptomsInfo[x],
+                          currentIndex: x + 1,
+                          totalIndex: controller.type.value == "main covid"
+                              ? controller.mainSymptoms.length
+                              : controller.variantSymptoms.length,
+                        );
+                      },
+                    ),
+                  );
+                }),
                 Obx(() {
                   if (controller.currentIndex.value == 0) {
                     return Row(
@@ -113,10 +127,15 @@ class SurveyView extends GetView<SurveyController> {
                           child: MyButtonWidget(
                             label: "Ya",
                             func: () {
-                              controller.mySymptoms
-                                  .replaceRange(controller.currentIndex.value, controller.currentIndex.value + 1, [1]);
-                              controller.pageController.nextPage(duration: 200.milliseconds, curve: Curves.ease);
-                              print(controller.mySymptoms.toString());
+                              if (controller.type.value == "main covid") {
+                                controller.myMainSymptoms
+                                    .replaceRange(controller.currentIndex.value, controller.currentIndex.value + 1, [1]);
+                                controller.mainPageController.nextPage(duration: 200.milliseconds, curve: Curves.ease);
+                              } else {
+                                controller.myVariantSymptoms
+                                    .replaceRange(controller.currentIndex.value, controller.currentIndex.value + 1, [1]);
+                                controller.variantPageController.nextPage(duration: 200.milliseconds, curve: Curves.ease);
+                              }
                             },
                             color: Colors.blueGrey[300],
                           ),
@@ -128,16 +147,21 @@ class SurveyView extends GetView<SurveyController> {
                           child: MyButtonWidget(
                             label: "Tidak",
                             func: () {
-                              controller.mySymptoms
-                                  .replaceRange(controller.currentIndex.value, controller.currentIndex.value + 1, [0]);
-                              controller.pageController.nextPage(duration: 200.milliseconds, curve: Curves.ease);
-                              print(controller.mySymptoms.toString());
+                              if (controller.type.value == "main covid") {
+                                controller.myMainSymptoms
+                                    .replaceRange(controller.currentIndex.value, controller.currentIndex.value + 1, [0]);
+                                controller.mainPageController.nextPage(duration: 200.milliseconds, curve: Curves.ease);
+                              } else {
+                                controller.myVariantSymptoms
+                                    .replaceRange(controller.currentIndex.value, controller.currentIndex.value + 1, [0]);
+                                controller.variantPageController.nextPage(duration: 200.milliseconds, curve: Curves.ease);
+                              }
                             },
                           ),
                         ),
                       ],
                     );
-                  } else if (controller.currentIndex.value == 19) {
+                  } else if (controller.currentIndex.value == controller.totalIndex.value) {
                     return Column(
                       children: [
                         Row(
@@ -146,10 +170,15 @@ class SurveyView extends GetView<SurveyController> {
                               child: MyButtonWidget(
                                 label: "Ya",
                                 func: () {
-                                  controller.mySymptoms
-                                      .replaceRange(controller.currentIndex.value, controller.currentIndex.value + 1, [1]);
-                                  controller.showDialog();
-                                  print(controller.mySymptoms.toString());
+                                  if (controller.type.value == "main covid") {
+                                    controller.myMainSymptoms
+                                        .replaceRange(controller.currentIndex.value, controller.currentIndex.value + 1, [1]);
+                                    controller.checkPositiveSymptoms();
+                                  } else {
+                                    controller.myVariantSymptoms
+                                        .replaceRange(controller.currentIndex.value, controller.currentIndex.value + 1, [1]);
+                                    controller.checkPositiveSymptoms();
+                                  }
                                 },
                                 color: Colors.blueGrey[300],
                               ),
@@ -161,10 +190,15 @@ class SurveyView extends GetView<SurveyController> {
                               child: MyButtonWidget(
                                 label: "Tidak",
                                 func: () {
-                                  controller.mySymptoms
-                                      .replaceRange(controller.currentIndex.value, controller.currentIndex.value + 1, [0]);
-                                  controller.showDialog();
-                                  print(controller.mySymptoms.toString());
+                                  if (controller.type.value == "main covid") {
+                                    controller.myMainSymptoms
+                                        .replaceRange(controller.currentIndex.value, controller.currentIndex.value + 1, [0]);
+                                    controller.checkPositiveSymptoms();
+                                  } else {
+                                    controller.myVariantSymptoms
+                                        .replaceRange(controller.currentIndex.value, controller.currentIndex.value + 1, [0]);
+                                    controller.checkPositiveSymptoms();
+                                  }
                                 },
                               ),
                             ),
@@ -176,7 +210,11 @@ class SurveyView extends GetView<SurveyController> {
                         MyButtonWidget(
                           label: "Sebelumnya",
                           func: () {
-                            controller.pageController.previousPage(duration: 200.milliseconds, curve: Curves.ease);
+                            if (controller.type.value == "main covid") {
+                              controller.mainPageController.previousPage(duration: 200.milliseconds, curve: Curves.ease);
+                            } else {
+                              controller.variantPageController.previousPage(duration: 200.milliseconds, curve: Curves.ease);
+                            }
                           },
                         ),
                       ],
@@ -190,10 +228,15 @@ class SurveyView extends GetView<SurveyController> {
                               child: MyButtonWidget(
                                 label: "Ya",
                                 func: () {
-                                  controller.mySymptoms
-                                      .replaceRange(controller.currentIndex.value, controller.currentIndex.value + 1, [1]);
-                                  controller.pageController.nextPage(duration: 200.milliseconds, curve: Curves.ease);
-                                  print(controller.mySymptoms.toString());
+                                  if (controller.type.value == "main covid") {
+                                    controller.myMainSymptoms
+                                        .replaceRange(controller.currentIndex.value, controller.currentIndex.value + 1, [1]);
+                                    controller.mainPageController.nextPage(duration: 200.milliseconds, curve: Curves.ease);
+                                  } else {
+                                    controller.myVariantSymptoms
+                                        .replaceRange(controller.currentIndex.value, controller.currentIndex.value + 1, [1]);
+                                    controller.variantPageController.nextPage(duration: 200.milliseconds, curve: Curves.ease);
+                                  }
                                 },
                                 color: Colors.blueGrey[300],
                               ),
@@ -205,10 +248,15 @@ class SurveyView extends GetView<SurveyController> {
                               child: MyButtonWidget(
                                 label: "Tidak",
                                 func: () {
-                                  controller.mySymptoms
-                                      .replaceRange(controller.currentIndex.value, controller.currentIndex.value + 1, [0]);
-                                  controller.pageController.nextPage(duration: 200.milliseconds, curve: Curves.ease);
-                                  print(controller.mySymptoms.toString());
+                                  if (controller.type.value == "main covid") {
+                                    controller.myMainSymptoms
+                                        .replaceRange(controller.currentIndex.value, controller.currentIndex.value + 1, [0]);
+                                    controller.mainPageController.nextPage(duration: 200.milliseconds, curve: Curves.ease);
+                                  } else {
+                                    controller.myVariantSymptoms
+                                        .replaceRange(controller.currentIndex.value, controller.currentIndex.value + 1, [0]);
+                                    controller.variantPageController.nextPage(duration: 200.milliseconds, curve: Curves.ease);
+                                  }
                                 },
                               ),
                             ),
@@ -220,7 +268,11 @@ class SurveyView extends GetView<SurveyController> {
                         MyButtonWidget(
                           label: "Sebelumnya",
                           func: () {
-                            controller.pageController.previousPage(duration: 200.milliseconds, curve: Curves.ease);
+                            if (controller.type.value == "main covid") {
+                              controller.mainPageController.previousPage(duration: 200.milliseconds, curve: Curves.ease);
+                            } else {
+                              controller.variantPageController.previousPage(duration: 200.milliseconds, curve: Curves.ease);
+                            }
                           },
                         ),
                       ],

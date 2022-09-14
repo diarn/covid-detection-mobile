@@ -1,5 +1,6 @@
 import 'package:fluentui_icons/fluentui_icons.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class MyButtonWidget extends StatelessWidget {
   final String label;
@@ -88,6 +89,50 @@ class MyNavigationTopWidget extends StatelessWidget {
           Text("Kembali"),
         ],
       ),
+    );
+  }
+}
+
+class ResultDataWidget extends StatelessWidget {
+  final String label;
+  final double resultValue;
+  const ResultDataWidget({
+    Key? key,
+    required this.label,
+    required this.resultValue,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(label),
+            Text(resultValue.toString() + " %"),
+          ],
+        ),
+        Stack(
+          children: [
+            Container(
+              height: Get.height * 0.01,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8),
+                color: Colors.blueGrey[300],
+              ),
+            ),
+            Container(
+              height: Get.height * 0.01,
+              width: (Get.width - 80) * (0.01 * resultValue),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8),
+                color: Colors.blue,
+              ),
+            ),
+          ],
+        ),
+      ],
     );
   }
 }
