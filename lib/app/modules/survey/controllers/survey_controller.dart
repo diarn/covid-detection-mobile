@@ -74,21 +74,21 @@ class SurveyController extends GetxController {
   ].obs;
 
   RxList<String> variantSymptomsInfo = [
-    "Kelelahan",
+    "Berdasarkan penyebabnya\n\nHal pertama yang membedakan batuk biasa dan batuk gejala COVID-19 adalah penyebabnya. Umumnya, batuk biasa bisa disebabkan oleh flu, misalnya karena virus influenza atau rhinovirus, sedangkan batuk gejala COVID-19 disebabkan oleh virus Corona.\nSementara itu, lamanya waktu hingga muncul gejala batuk pun berbeda. Batuk flu biasanya baru muncul selama 1–3 hari setelah terpapar virus, sedangkan batuk gejala COVID-19 sekitar 2–14 hari.\nWalau berbeda, cara penularan kedua batuk ini tetap sama, yaitu melalui udara, percikan liur dan ingus (droplet), dan kontak fisik dengan orang yang sakit.\nBerdasarkan komplikasi yang dapat ditimbulkan\n\nBatuk biasa akibat flu dapat sembuh dalam waktu beberapa hari hingga beberapa minggu. Namun, bila batuk yang Anda derita telah berlangsung lebih dari 3 minggu, batuk tersebut sudah dikategorikan sebagai batuk kronis. Batuk yang lama sembuh ini lebih sering terjadi pada penderita asma, COPD, atau sinusitis.\nJika tidak diobati dengan baik, flu yang menyebabkan batuk biasa terkadang bisa menimbulkan sejumlah komplikasi, seperti pneumonia.\nDi sisi lain, COVID-19 yang menimbulkan gejala batuk juga berpotensi menimbulkan komplikasi berupa pneumonia dan ARDS. Namun, risiko terjadinya komplikasi tersebut lebih tinggi pada penderita yang belum mendapatkan vaksin COVID-19, memiliki penyakit komorbid, atau berusia lanjut.\nPada kasus tertentu, COVID-19 juga bisa menyebabkan gejala atau masalah kesehatan yang berlangsung lama, bahkan setelah infeksinya sembuh, seperti anosmia, parosmia, dan long-haul COVID-19.",
     "Sakit Kepala",
     "Kehilangan Nafsu Makan",
     "Gampang Marah atau Bingung",
     "Kesakitan Umum",
     "Mialgia atau Sakit Badan",
-    "Diare",
-    "Mual-mual atau Muntah",
-    "Sesak Nafas",
-    "Sakit Tenggorokan",
+    "Untuk mengetahui perbedaan diare COVID dan bukan COVID, kamu bisa amati dari tampilan fesesnya seperti berikut:\n1. Tekstur Diare Berair\n\nMasih dalam penelitian yang sama dengan sebelumnya, sebanyak 64 persen pasien COVID-19 melaporkan diare dengan feses berair.\nFeses berair dapat menunjukkan bahwa kamu telah kehilangan cukup banyak cairan di dalam tubuh. Hal ini dapat menyebabkan dehidrasi. Itulah mengapa penting bagi penderita COVID untuk tetap terhidrasi saat mengalami diare.\n\n2. Feses Berwarna Kuning\n\nPenelitian lain yang diterbitkan pada Clinical Gastroenterology and Hepatology juga melaporkan kondisi feses akibat diare terkait COVID-19. Kebanyakan pasien mengalami feses berwarna kuning.\nVirus dapat menyebabkan diare kuning karena tinja bergerak terlalu cepat melalui usus. Ketika feses bergerak dengan kecepatan normal, usus mampu menyerap lemak di dalamnya.\nAkan tetapi, ketika feses terlalu cepat, lemaknya tidak terserap maksimal. Lemak inilah yang  memberi warna kuning pada feses.\n\n3. Tinja Berwarna Hijau\n\nSelain berwarna kuning, diare COVID-19 juga dapat menyebabkan feses berwarna kehijauan. Ini terjadi akibat lemak tidak terurai dengan baik, akibatnya empedu yang ada di feses dapat menyebabkan diare tampak hijau.\nEmpedu adalah zat yang dikeluarkan oleh kantong empedu dan hati untuk membantu mencerna lemak.",
+    "Mual-mual atau Muntah, gejala ini mungkin bertahan satu(1) hari",
+    "Walaupun sesak napas adalah gejala Covid-19 yang paling serius, umumnya kesulitan bernapas bukanlah gejala awal yang dirasakan. Serangan virus yang ringan jarang mengakibatkan gejala sesak napas, dengan estimasi sekitar 1,4-7,6% saja yang melaporkan kesulitan bernapas. Data juga menunjukkan sesak napas umumnya muncul sekitar 5-10 hari menyusul gejala lain seperti sakit kepala, batuk, dan demam.\nBeberapa ciri gejala sesak napas akibat serangan virus corona antara lain:\n•Sering disertai dengan batuk kering dan demam, walaupun beberapa penderita melaporkan tidak ada gejala tersebut.\n•Bagian dada terasa ketat.\n•Kesulitan menarik napas dalam-dalam.",
+    "Jika kamu mencurigai sakit tenggorokan yang kamu alami adalah karena virus corona, kamu perlu ingat-ingat apakah belakangan kamu pernah keluar rumah dan lupa mencuci tangan atau melakukan physical distancing. Namun, kamu sebaiknya menyingkirkan skenario terburuk ini, sebab penelitian menunjukkan hanya 5 hingga 14 persen orang dengan COVID-19 mengalami rasa sakit atau iritasi di tenggorokan.\n\nSelain sakit tenggorokan, gejala yang lebih umum dari COVID-19 adalah demam, batuk kering, kesulitan bernapas, kelelahan, sakit kepala, dan tiba-tiba kehilangan rasa atau bau. Jadi, sebaiknya kamu lebih berfokus pada gejala-gejala ini.",
     "Menggigil",
     "Batuk",
-    "Punya Riwayat Demam",
+    "Punya Riwayat Demam minimal 3 minggu kebelakang",
     "Demam",
-    "Penyakit Lain",
+    "Penyakit Lain, ini merupakan penyakit lain yang Anda alami saat ini selain dari 14 gejala yang telah dikonfirmasi sebelumnya",
   ].obs;
 
   RxList<int> myMainSymptoms = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0].obs;
