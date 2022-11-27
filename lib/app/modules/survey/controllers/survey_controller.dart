@@ -150,57 +150,57 @@ class SurveyController extends GetxController {
   }
 
   checkPositiveSymptoms() {
-    List<int> positiveSymptoms = type.value == "main covid"
-        ? myMainSymptoms.where((p0) => p0 == 1).toList()
-        : myVariantSymptoms.where((p0) => p0 == 1).toList();
-    if (positiveSymptoms.length < 6) {
-      Get.dialog(
-        Dialog(
-          child: Container(
-            padding: EdgeInsets.symmetric(horizontal: 24, vertical: 24),
-            height: Get.height * 0.3,
-            width: Get.width - 32,
-            child: Column(
-              children: [
-                Text(
-                  "Oops, Terjadi Kesalahan",
-                  style: TextStyle(
-                    fontSize: 20,
-                  ),
-                ),
-                Expanded(
-                  child: Center(
-                    child: Text.rich(
-                      TextSpan(
-                        text: "Anda harus mengkonfirmasi minimal ",
-                        children: [
-                          TextSpan(
-                            text: "6 gejala ",
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          TextSpan(text: "positif untuk bisa melanjutkan proses"),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-                MyButtonWidget(
-                  label: "Kembali",
-                  func: () {
-                    Get.back();
-                  },
-                )
-              ],
-            ),
-          ),
-        ),
-        barrierDismissible: false,
-      );
-    } else {
-      showDialog();
-    }
+    // List<int> positiveSymptoms = type.value == "main covid"
+    //     ? myMainSymptoms.where((p0) => p0 == 1).toList()
+    //     : myVariantSymptoms.where((p0) => p0 == 1).toList();
+    // if (positiveSymptoms.length < 6) {
+    //   Get.dialog(
+    //     Dialog(
+    //       child: Container(
+    //         padding: EdgeInsets.symmetric(horizontal: 24, vertical: 24),
+    //         height: Get.height * 0.3,
+    //         width: Get.width - 32,
+    //         child: Column(
+    //           children: [
+    //             Text(
+    //               "Oops, Terjadi Kesalahan",
+    //               style: TextStyle(
+    //                 fontSize: 20,
+    //               ),
+    //             ),
+    //             Expanded(
+    //               child: Center(
+    //                 child: Text.rich(
+    //                   TextSpan(
+    //                     text: "Anda harus mengkonfirmasi minimal ",
+    //                     children: [
+    //                       TextSpan(
+    //                         text: "6 gejala ",
+    //                         style: TextStyle(
+    //                           fontWeight: FontWeight.bold,
+    //                         ),
+    //                       ),
+    //                       TextSpan(text: "positif untuk bisa melanjutkan proses"),
+    //                     ],
+    //                   ),
+    //                 ),
+    //               ),
+    //             ),
+    //             MyButtonWidget(
+    //               label: "Kembali",
+    //               func: () {
+    //                 Get.back();
+    //               },
+    //             )
+    //           ],
+    //         ),
+    //       ),
+    //     ),
+    //     barrierDismissible: false,
+    //   );
+    // } else {
+    showDialog();
+    // }
   }
 
   Widget dialogContent() {
@@ -431,6 +431,12 @@ class SurveyController extends GetxController {
                                   label: "Flu",
                                   resultValue: data["FLU"],
                                 ),
+                                SizedBox(
+                                  height: Get.height * 0.03,
+                                ),
+                                Text(
+                                  "Anda memiliki kemungkinan Alergi ${data["ALLERGY"]} %, Demam ${data["COLD"]} %, Covid ${data["COVID"]} %, dan Flu ${data["FLU"]} %",
+                                ),
                               ],
                             )
                           : Column(
@@ -459,6 +465,12 @@ class SurveyController extends GetxController {
                                 ResultDataWidget(
                                   label: "Omicron",
                                   resultValue: data["OMICRON"],
+                                ),
+                                SizedBox(
+                                  height: Get.height * 0.03,
+                                ),
+                                Text(
+                                  "Anda memiliki kemungkinan mengalami Covid-19 varian Alpha ${data["ALPHA"]} %, Beta 0.0 %, Delta ${data["DELTA"]} %, dan Omicron ${data["OMICRON"]} %",
                                 ),
                               ],
                             ),
@@ -495,6 +507,16 @@ class SurveyController extends GetxController {
       myMainSymptoms.forEach((element) {
         data += element.toString();
       });
+      var x = myMainSymptoms.where((p0) => p0 == 1);
+      if (x.length == 0) {
+        log("anjai");
+        return {
+          "ALLERGY": 0.0,
+          "COLD": 0.0,
+          "COVID": 0.0,
+          "FLU": 0.0,
+        };
+      }
       return await ApiClassificationServices().getMainClassification(data).then((value) {
         var jsonData = jsonDecode(value.body);
         if (jsonData["status"] != "fail") {
@@ -507,6 +529,16 @@ class SurveyController extends GetxController {
       myVariantSymptoms.forEach((element) {
         data += element.toString();
       });
+
+      var y = myVariantSymptoms.where((p0) => p0 == 1);
+      if (y.length == 0) {
+        log("anjai");
+        return {
+          "ALPHA": 0.0,
+          "DELTA": 0.0,
+          "OMICRON": 0.0,
+        };
+      }
       return await ApiClassificationServices().getVariantClassification(data).then((value) {
         var jsonData = jsonDecode(value.body);
         if (jsonData["status"] != "fail") {
