@@ -77,15 +77,15 @@ class HomeView extends GetView<HomeController> {
                     Get.toNamed(Routes.SURVEY, arguments: "variant");
                   },
                 ),
-                // SizedBox(
-                //   height: Get.height * 0.01,
-                // ),
-                // MyButtonWidget(
-                //   label: "Tentang Aplikasi",
-                //   func: () {
-                //     Get.toNamed(Routes.ABOUT_APP);
-                //   },
-                // ),
+                SizedBox(
+                  height: Get.height * 0.01,
+                ),
+                MyButtonWidget(
+                  label: "Tentang Aplikasi",
+                  func: () {
+                    Get.toNamed(Routes.ABOUT_APP);
+                  },
+                ),
               ],
             ),
           ),

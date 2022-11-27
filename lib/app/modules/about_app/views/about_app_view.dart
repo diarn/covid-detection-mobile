@@ -64,7 +64,7 @@ class AboutAppView extends GetView<AboutAppController> {
                     height: Get.height * 0.01,
                   ),
                   Text(
-                      "Aplikasi ini dibangun untuk memudahkan masyarakat melakukan pengecekan indikasi covid berdasarkan gejala-gejala yang dialaminya."),
+                      "Aplikasi ini dibangun untuk memudahkan masyarakat melakukan pengecekan indikasi covid berdasarkan gejala-gejala yang dialaminya.\n\nPeringatan\n\nHasil prediksi aplikasi akan lebih baik jika dikonsultasikan dengan dokter"),
                 ],
               ),
             ),
