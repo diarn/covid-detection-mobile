@@ -1,6 +1,9 @@
 # mobile_app
 
-A new Flutter project.
+A Flutter project for covid 19 detection, feature:
+- using Flutter 3.3.X
+- covid 19 detection based on symptoms
+- covid 19 variant detection based on symptoms
 
 ## Getting Started
 
