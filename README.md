@@ -10,7 +10,8 @@ A Flutter project for covid 19 detection, feature:
 This project is a starting point for a Flutter application.
 
 A few resources to get you started if this is your first Flutter project:
-
+- make sure you have flutter sdk > 3.3.X
+- run flutter pub get before build app
 - [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
 - [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
 
