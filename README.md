@@ -1,4 +1,4 @@
-# mobile_app
+# Covid-19 Detection App
 
 A Flutter project for covid 19 detection, feature:
 - using Flutter 3.3.X
